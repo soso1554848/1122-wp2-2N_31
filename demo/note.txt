@@ -2,7 +2,7 @@ git config --global user.name "soso1554848"
 
 git config --global user.email "benz560701@gmail.com"
 
-git log --pretty=format:"%h%x09%an%x09%ad%x09%s" --after="2023-12-05"
+git log --pretty=format:"%h%x09%an%x09%ad%x09%s" --after="2024-03-05"
 
 git add .
 

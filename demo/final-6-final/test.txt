@@ -1,0 +1,87 @@
+CREATE TABLE cabins (
+    id serial NOT NULL PRIMARY KEY,
+    created_at timestamp NOT NULL DEFAULT NOW(),
+    name text, 
+    "maxCapacity" int2,
+    "regularPrice" int2,
+    discount int2,
+    image text,
+    description text
+);
+
+ALTER TABLE cabins ENABLE ROW LEVEL SECURITY;
+
+create policy "Allow public SELECT access for all users" on "public"."cabins" as PERMISSIVE for SELECT to public using (true);
+create policy "Allow public INSERT access for all users" on "public"."cabins" as PERMISSIVE for INSERT to public with check (true);
+create policy "Allow public UPDATE access for all users" on "public"."cabins" as PERMISSIVE for UPDATE to public using (true) with check (true);
+create policy "Allow public DELETE access for all users" on "public"."cabins" as PERMISSIVE for DELETE to public using (true);
+
+CREATE TABLE guests (
+    id serial NOT NULL PRIMARY KEY,
+    created_at timestamp NOT NULL DEFAULT NOW(),
+    "fullName" varchar(255),
+    email text,
+    nationality varchar(255),
+    "nationalID" varchar(255),
+    "countryFlag" text
+);
+
+ALTER TABLE guests ENABLE ROW LEVEL SECURITY;
+
+create policy "Allow public SELECT access for all users" on "public"."guests" as PERMISSIVE for SELECT to public using (true);
+create policy "Allow public INSERT access for all users" on "public"."guests" as PERMISSIVE for INSERT to public with check (true);
+create policy "Allow public UPDATE access for all users" on "public"."guests" as PERMISSIVE for UPDATE to public using (true) with check (true);
+create policy "Allow public DELETE access for all users" on "public"."guests" as PERMISSIVE for DELETE to public using (true);
+
+create TABLE bookings (
+    id serial NOT NULL PRIMARY KEY,
+    created_at timestamp NOT NULL DEFAULT NOW(),
+    "startDate" timestamp,
+    "endDate" timestamp,
+    "numNights" int2,
+    "numGuests" int2,
+    "cabinPrice" float4,
+    "extrasPrice" float4,
+    "totalPrice" float4,
+    status text,
+    "hasBreakfast" bool,
+    "isPaid" bool,
+    observations text,
+    "cabinId" int,
+    "guestId" int,
+    CONSTRAINT fk_1 FOREIGN KEY ("cabinId") REFERENCES cabins(id) on DELETE SET NULL on UPDATE CASCADE,
+    CONSTRAINT fk_2 FOREIGN KEY ("guestId") REFERENCES guests(id) on DELETE SET NULL on UPDATE CASCADE
+);
+
+ALTER TABLE bookings ENABLE ROW LEVEL SECURITY;
+
+create policy "Allow public SELECT access for all users" on "public"."bookings" as PERMISSIVE for SELECT to public using (true);
+create policy "Allow public INSERT access for all users" on "public"."bookings" as PERMISSIVE for INSERT to public with check (true);
+create policy "Allow public UPDATE access for all users" on "public"."bookings" as PERMISSIVE for UPDATE to public using (true) with check (true);
+create policy "Allow public DELETE access for all users" on "public"."bookings" as PERMISSIVE for DELETE to public using (true);
+
+CREATE TABLE settings (
+    id serial NOT NULL PRIMARY KEY,
+    created_at timestamp NOT NULL DEFAULT NOW(),
+    "minBookingLength" int,
+    "maxBookingLength" int,
+    "maxGuestsPerBooking" int,
+    "breakfastPrice" int
+);
+
+ALTER TABLE settings ENABLE ROW LEVEL SECURITY;
+
+create policy "Allow public SELECT access for all users" on "public"."settings" as PERMISSIVE for SELECT to public using (true);
+create policy "Allow public INSERT access for all users" on "public"."settings" as PERMISSIVE for INSERT to public with check (true);
+create policy "Allow public UPDATE access for all users" on "public"."settings" as PERMISSIVE for UPDATE to public using (true) with check (true);
+create policy "Allow public DELETE access for all users" on "public"."settings" as PERMISSIVE for DELETE to public using (true);
+
+
+--- Drop all tables
+DROP TABLE bookings, cabins, guests, settings;
+
+DROP TABLE cabins;
+
+DROP TABLE guests;
+
+DROP TABLE settings;
